@@ -28,7 +28,7 @@ public class VertexColourDistributionMetric extends AbstractMetric implements Ob
         for (int i = 0; i < colours.elementsCount; ++i) {
             counts.putOrAdd((BitSet) ((Object[]) colours.buffer)[i], 1, 1);
         }
-
+        
         BitSet sampleSpace[] = new BitSet[counts.assigned];
         double distribution[] = new double[counts.assigned];
         int pos = 0;
