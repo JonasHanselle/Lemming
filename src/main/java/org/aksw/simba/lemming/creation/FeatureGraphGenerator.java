@@ -1,7 +1,13 @@
 package org.aksw.simba.lemming.creation;
 
-import java.util.HashMap;
+import com.carrotsearch.hppc.BitSet;
+import com.carrotsearch.hppc.IntArrayList;
+import com.carrotsearch.hppc.IntIntOpenHashMap;
+import com.carrotsearch.hppc.ObjectObjectOpenHashMap;
+import com.carrotsearch.hppc.BitSet;
+
 import java.util.Map;
+
 import org.aksw.simba.lemming.ColouredGraph;
 import org.aksw.simba.lemming.metrics.dist.IntDistribution;
 import org.aksw.simba.lemming.metrics.dist.ObjectDistribution;
@@ -9,7 +15,6 @@ import org.aksw.simba.lemming.metrics.dist.ObjectDistribution;
 import org.aksw.simba.lemming.metrics.dist.multi.ColouredInDegreeDistributionMetric;
 import org.aksw.simba.lemming.metrics.dist.multi.ColouredOutDegreeDistributionMetric;
 
-import com.carrotsearch.hppc.BitSet;
 
 /**
  * !!! PROTOTYPICAL !!! This class implements algorithms for generating coloured
@@ -127,40 +132,4 @@ public class FeatureGraphGenerator {
 		return cGraph;
 	}
 
-	// this entire function is only used for debugging
-	public static void main(String[] args) {
-		FeatureGraphGenerator g = new FeatureGraphGenerator();
-		int colourCount = 10;
-		BitSet[] colours = new BitSet[colourCount];
-		double[] colorValues = new double[colourCount];
-		for (int i = 0; i < colourCount; i++) {
-			BitSet colour = new BitSet(i);
-			colour.set(i);
-			colours[i] = colour;
-			// add some appropriate values for testing here
-			// colorValues[i] = ThreadLocalRandom.current().nextInt(3, 5);
-			colorValues[i] = 3;
-		}
-		Map<BitSet, IntDistribution> cIndegreeDistribution = new HashMap<BitSet, IntDistribution>();
-		for (int i = 0; i < colourCount; i++) {
-			int[] sampleSpace = { 1, 2, 3 };
-			double[] degreeValues = { 1., 1., 1. };
-			IntDistribution dist = new IntDistribution(sampleSpace, degreeValues);
-			cIndegreeDistribution.put(colours[i], dist);
-		}
-		// System.out.println("size here: " + cIndegreeDistribution.size());
-		ObjectDistribution<BitSet> vertexColourDistribution = new ObjectDistribution<BitSet>(colours, colorValues);
-		// System.out.println(vertexColourDistribution);
-		ColouredGraph cGraph = g.generateGraphColouredInDegree(vertexColourDistribution, cIndegreeDistribution, null);
-		// analyze whether cGraph fulfills the desired properties
-		// VertexColourDistributionMetric vcdm = new VertexColourDistributionMetric();
-		// System.out.println(vcdm.apply(cGraph));
-		ColouredInDegreeDistributionMetric cidm = new ColouredInDegreeDistributionMetric();
-		System.out.println("" + cIndegreeDistribution);
-		System.out.println("" + cidm.apply(cGraph));
-
-		ColouredGraph cGraph2 = g.generateGraphColouredOutDegree(vertexColourDistribution, cIndegreeDistribution, null);
-		ColouredOutDegreeDistributionMetric codm = new ColouredOutDegreeDistributionMetric();
-		System.out.println(codm.apply(cGraph2));
-	}
 }
