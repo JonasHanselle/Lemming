@@ -15,7 +15,6 @@ import org.aksw.simba.lemming.metrics.dist.ObjectDistribution;
 import org.aksw.simba.lemming.metrics.dist.multi.ColouredInDegreeDistributionMetric;
 import org.aksw.simba.lemming.metrics.dist.multi.ColouredOutDegreeDistributionMetric;
 
-
 /**
  * !!! PROTOTYPICAL !!! This class implements algorithms for generating coloured
  * graphs according to a given set of features
@@ -59,12 +58,15 @@ public class FeatureGraphGenerator {
 			// System.out.println("colours: " + inColours.length);
 			int currentNode = 0;
 			System.out.println("colors: " + inColours.length);
+			// iterate over all colours
 			for (BitSet col : inColours) {
 				IntDistribution currentDist = colouredInDegreeDistribution.get(col);
+				// iterate over all elements of the values of the distribution
 				for (int i = 0; i < currentDist.getValues().length; i++) {
+					// until all enough edges has been generated
 					for (int k = 0; k < (int) currentDist.getValues()[i]; k++) {
+						// generate edges according to fit the desired node degree
 						for (int j = 0; j < (int) currentDist.getSampleSpace()[i]; j++) {
-							// System.out.println("currentDist value: " + (int)currentDist.getValues()[i]);
 							int candidate = 0;
 							if (candidate == currentNode)
 								candidate++;
@@ -111,12 +113,15 @@ public class FeatureGraphGenerator {
 			// System.out.println("colours: " + inColours.length);
 			int currentNode = 0;
 			System.out.println("colors: " + inColours.length);
+			// iterate over all colours
 			for (BitSet col : inColours) {
 				IntDistribution currentDist = colouredOutdegreeDistribution.get(col);
+				// iterate over all elements of the values of the distribution
 				for (int i = 0; i < currentDist.getValues().length; i++) {
+					// until all enough edges has been generated
 					for (int k = 0; k < (int) currentDist.getValues()[i]; k++) {
+						// generate edges according to fit the desired node degree
 						for (int j = 0; j < (int) currentDist.getSampleSpace()[i]; j++) {
-							// System.out.println("currentDist value: " + (int)currentDist.getValues()[i]);
 							int candidate = 0;
 							if (candidate == currentNode)
 								candidate++;
