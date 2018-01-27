@@ -6,6 +6,8 @@ import com.carrotsearch.hppc.IntIntOpenHashMap;
 import com.carrotsearch.hppc.ObjectObjectOpenHashMap;
 import com.carrotsearch.hppc.BitSet;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 
 import org.aksw.simba.lemming.ColouredGraph;
@@ -45,12 +47,17 @@ public class FeatureGraphGenerator {
 
 		ColouredGraph cGraph = new ColouredGraph();
 		// add vertices of desired colours to the graph
+		ArrayList<Integer> vertexIDs = new ArrayList<Integer>();
 		for (int i = 0; i < vertexColourDistribution.getSampleSpace().length; i++) {
 			int currentCount = (int) vertexColourDistribution.getValues()[i];
 			for (int j = 0; j < currentCount; j++) {
-				cGraph.addVertex(vertexColourDistribution.getSampleSpace()[i]);
+				vertexIDs.add(cGraph.addVertex(vertexColourDistribution.getSampleSpace()[i]));
 			}
 		}
+
+		// shuffle vertices for randomness
+		Collections.shuffle(vertexIDs);
+
 		System.out.println("Size: " + cGraph.getVertices().size());
 		// add edges to the graph
 		if (colouredInDegreeDistribution != null) {
@@ -68,9 +75,9 @@ public class FeatureGraphGenerator {
 						// generate edges according to fit the desired node degree
 						for (int j = 0; j < (int) currentDist.getSampleSpace()[i]; j++) {
 							int candidate = 0;
-							if (candidate == currentNode)
+							if (candidate == vertexIDs.get(currentNode))
 								candidate++;
-							cGraph.addEdge(candidate, currentNode);
+							cGraph.addEdge(candidate, vertexIDs.get(currentNode));
 							candidate++;
 						}
 					}
