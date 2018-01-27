@@ -48,6 +48,7 @@ public class FeatureGraphGenerator {
 		ColouredGraph cGraph = new ColouredGraph();
 		// add vertices of desired colours to the graph
 		ArrayList<Integer> vertexIDs = new ArrayList<Integer>();
+		ArrayList<Integer> edgeIDs = new ArrayList<Integer>();
 		for (int i = 0; i < vertexColourDistribution.getSampleSpace().length; i++) {
 			int currentCount = (int) vertexColourDistribution.getValues()[i];
 			for (int j = 0; j < currentCount; j++) {
@@ -74,10 +75,11 @@ public class FeatureGraphGenerator {
 					for (int k = 0; k < (int) currentDist.getValues()[i]; k++) {
 						// generate edges according to fit the desired node degree
 						for (int j = 0; j < (int) currentDist.getSampleSpace()[i]; j++) {
+							Collections.shuffle(vertexIDs);
 							int candidate = 0;
-							if (candidate == vertexIDs.get(currentNode))
+							if (vertexIDs.get(candidate) == currentNode)
 								candidate++;
-							cGraph.addEdge(candidate, vertexIDs.get(currentNode));
+							cGraph.addEdge(vertexIDs.get(candidate), currentNode);
 							candidate++;
 						}
 					}
