@@ -37,6 +37,62 @@ public class FeatureGraphGenerator {
 	 * @param colouredInDegreeDistribution
 	 *            Indegree distribution for each colour, MUST MATCH WITH
 	 *            vertexColourDistribution AND edgeColourDistribution!
+	 * @return {@link ColouredGraph} object with the desired properties
+	 */
+	public ColouredGraph generateGraphColouredInDegree(ObjectDistribution<BitSet> vertexColourDistribution,
+			Map<BitSet, IntDistribution> colouredInDegreeDistribution) {
+
+		ColouredGraph cGraph = new ColouredGraph();
+		// add vertices of desired colours to the graph
+		ArrayList<Integer> vertexIDs = new ArrayList<Integer>();
+		ArrayList<BitSet> edgeColours = new ArrayList<BitSet>();
+		for (int i = 0; i < vertexColourDistribution.getSampleSpace().length; i++) {
+			int currentCount = (int) vertexColourDistribution.getValues()[i];
+			for (int j = 0; j < currentCount; j++) {
+				vertexIDs.add(cGraph.addVertex(vertexColourDistribution.getSampleSpace()[i]));
+			}
+		}
+		// shuffle vertices for randomness
+		Collections.shuffle(vertexIDs);
+		Collections.shuffle(edgeColours);
+
+		// add edges to the graph
+		if (colouredInDegreeDistribution != null) {
+			BitSet[] inColours = vertexColourDistribution.getSampleSpace();
+			// index of current node and current edge
+			int currentNode = 0;
+			// iterate over all colours
+			for (BitSet col : inColours) {
+				IntDistribution currentDist = colouredInDegreeDistribution.get(col);
+				// iterate over all elements of the values of the distribution
+				for (int i = 0; i < currentDist.getValues().length; i++) {
+					// until enough edges have been generated
+					for (int k = 0; k < (int) currentDist.getValues()[i]; k++) {
+						// generate edges according to fit the desired node degree
+						for (int j = 0; j < (int) currentDist.getSampleSpace()[i]; j++) {
+							int candidate = 0;
+							if (vertexIDs.get(candidate) == currentNode)
+								candidate++;
+							cGraph.addEdge(vertexIDs.get(candidate), currentNode);
+							candidate++;
+//							currentEdge++;
+						}
+					}
+					currentNode++;
+				}
+			}
+		}
+		// TODO apply edge colours according to distribution
+		return cGraph;
+	}
+	
+	/**
+	 * 
+	 * @param vertexColourDistribution
+	 *            Desired colour distribution over vertices
+	 * @param colouredInDegreeDistribution
+	 *            Indegree distribution for each colour, MUST MATCH WITH
+	 *            vertexColourDistribution AND edgeColourDistribution!
 	 * @param edgeColourDistribution
 	 *            Desired colour distribution over edges
 	 * @return {@link ColouredGraph} object with the desired properties
@@ -48,48 +104,56 @@ public class FeatureGraphGenerator {
 		ColouredGraph cGraph = new ColouredGraph();
 		// add vertices of desired colours to the graph
 		ArrayList<Integer> vertexIDs = new ArrayList<Integer>();
-		ArrayList<Integer> edgeIDs = new ArrayList<Integer>();
+		ArrayList<BitSet> edgeColours = new ArrayList<BitSet>();
 		for (int i = 0; i < vertexColourDistribution.getSampleSpace().length; i++) {
 			int currentCount = (int) vertexColourDistribution.getValues()[i];
 			for (int j = 0; j < currentCount; j++) {
 				vertexIDs.add(cGraph.addVertex(vertexColourDistribution.getSampleSpace()[i]));
 			}
 		}
-
+		for (int i = 0; i < edgeColourDistribution.getSampleSpace().length; i++) {
+			int currentCount = (int) edgeColourDistribution.getValues()[i];
+			for (int j = 0; j < currentCount; j++) {
+				System.out.println(""+edgeColourDistribution.getSampleSpace()[i]);
+				edgeColours.add(edgeColourDistribution.getSampleSpace()[i]);
+			}
+		}
 		// shuffle vertices for randomness
 		Collections.shuffle(vertexIDs);
-
-		System.out.println("Size: " + cGraph.getVertices().size());
+		Collections.shuffle(edgeColours);
+		System.out.println("edge colours: " + edgeColours);
 		// add edges to the graph
 		if (colouredInDegreeDistribution != null) {
 			BitSet[] inColours = vertexColourDistribution.getSampleSpace();
 			// System.out.println("colours: " + inColours.length);
+			// index of current node and current edge
 			int currentNode = 0;
+			int currentEdge = 0;
 			System.out.println("colors: " + inColours.length);
 			// iterate over all colours
 			for (BitSet col : inColours) {
 				IntDistribution currentDist = colouredInDegreeDistribution.get(col);
 				// iterate over all elements of the values of the distribution
 				for (int i = 0; i < currentDist.getValues().length; i++) {
-					// until all enough edges has been generated
+					// until enough edges have been generated
 					for (int k = 0; k < (int) currentDist.getValues()[i]; k++) {
 						// generate edges according to fit the desired node degree
 						for (int j = 0; j < (int) currentDist.getSampleSpace()[i]; j++) {
-							Collections.shuffle(vertexIDs);
 							int candidate = 0;
 							if (vertexIDs.get(candidate) == currentNode)
 								candidate++;
-							cGraph.addEdge(vertexIDs.get(candidate), currentNode);
+							cGraph.addEdge(vertexIDs.get(candidate), currentNode, edgeColours.get(currentEdge));
 							candidate++;
+							currentEdge++;
 						}
 					}
 					currentNode++;
 				}
 			}
 		}
-		// TODO apply edge colours according to distribution
 		return cGraph;
 	}
+
 
 	/**
 	 * 
@@ -115,13 +179,11 @@ public class FeatureGraphGenerator {
 				cGraph.addVertex(vertexColourDistribution.getSampleSpace()[i]);
 			}
 		}
-		System.out.println("Size: " + cGraph.getVertices().size());
 		// add edges to the graph
 		if (colouredOutdegreeDistribution != null) {
 			BitSet[] inColours = vertexColourDistribution.getSampleSpace();
 			// System.out.println("colours: " + inColours.length);
 			int currentNode = 0;
-			System.out.println("colors: " + inColours.length);
 			// iterate over all colours
 			for (BitSet col : inColours) {
 				IntDistribution currentDist = colouredOutdegreeDistribution.get(col);
