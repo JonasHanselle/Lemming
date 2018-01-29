@@ -114,14 +114,12 @@ public class FeatureGraphGenerator {
 		for (int i = 0; i < edgeColourDistribution.getSampleSpace().length; i++) {
 			int currentCount = (int) edgeColourDistribution.getValues()[i];
 			for (int j = 0; j < currentCount; j++) {
-				System.out.println(""+edgeColourDistribution.getSampleSpace()[i]);
 				edgeColours.add(edgeColourDistribution.getSampleSpace()[i]);
 			}
 		}
 		// shuffle vertices for randomness
 		Collections.shuffle(vertexIDs);
 		Collections.shuffle(edgeColours);
-		System.out.println("edge colours: " + edgeColours);
 		// add edges to the graph
 		if (colouredInDegreeDistribution != null) {
 			BitSet[] inColours = vertexColourDistribution.getSampleSpace();
@@ -129,7 +127,6 @@ public class FeatureGraphGenerator {
 			// index of current node and current edge
 			int currentNode = 0;
 			int currentEdge = 0;
-			System.out.println("colors: " + inColours.length);
 			// iterate over all colours
 			for (BitSet col : inColours) {
 				IntDistribution currentDist = colouredInDegreeDistribution.get(col);

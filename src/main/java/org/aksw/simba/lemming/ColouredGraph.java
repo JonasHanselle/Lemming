@@ -70,7 +70,7 @@ public class ColouredGraph {
 
 	public int addEdge(int tail, int head, BitSet colour) {
 		int id = graph.addDirectedSimpleEdge(tail, head);
-		edgeColours.add(new BitSet());
+		edgeColours.add(colour);
 		return id;
 	}
 
