@@ -151,7 +151,6 @@ public class FeatureGraphGenerator {
 		return cGraph;
 	}
 
-
 	/**
 	 * 
 	 * @param vertexColourDistribution
