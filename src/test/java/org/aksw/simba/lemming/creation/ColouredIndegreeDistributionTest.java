@@ -1,25 +1,20 @@
 package org.aksw.simba.lemming.creation;
 
-import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.aksw.simba.lemming.ColouredGraph;
-import org.aksw.simba.lemming.colour.ColourPalette;
 import org.aksw.simba.lemming.metrics.dist.IntDistribution;
 import org.aksw.simba.lemming.metrics.dist.ObjectDistribution;
-import org.aksw.simba.lemming.metrics.dist.VertexColourDistributionMetric;
 import org.aksw.simba.lemming.metrics.dist.multi.ColouredInDegreeDistributionMetric;
 import org.aksw.simba.lemming.metrics.dist.multi.MultipleIntDistributionMetric;
 import org.junit.Test;
 
 import com.carrotsearch.hppc.BitSet;
-import com.carrotsearch.hppc.ObjectDoubleOpenHashMap;
 
 import org.junit.Assert;
-import org.junit.Test;
 
 public class ColouredIndegreeDistributionTest {
 
@@ -89,7 +84,6 @@ public class ColouredIndegreeDistributionTest {
 				Assert.assertEquals("Error for colour " + c.toString(), expectedValues[i], distribution.values[i],
 						DELTA);
 			}
-			// System.out.println("edges " + cGraph.getGraph().getNumberOfEdges());
 			Assert.assertEquals("Error for colour " + c.toString(), expectedValues.length, distribution.values.length);
 		}
 	}
