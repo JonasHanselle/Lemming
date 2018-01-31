@@ -55,7 +55,7 @@ public class EdgeColourTest {
 
 		ObjectDistribution<BitSet> vertexColourDistribution = new ObjectDistribution<BitSet>(vertexColours,
 				colorValues);
-		ColouredGraph cGraph = g.generateGraphColouredInDegree(vertexColourDistribution, cIndegreeDistribution,
+		ColouredGraph cGraph = g.generateGraphColouredInDegree(cIndegreeDistribution,
 				edgeColourDistribution);
 
 		EdgeColourDistributionMetric metric = new EdgeColourDistributionMetric();
