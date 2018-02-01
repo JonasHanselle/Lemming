@@ -61,8 +61,6 @@ public class ColouredIndegreeDistributionTest {
 		double[] edgeColourValues = { (double) edges / edgeColourCount + 1, (double) edges / edgeColourCount + 1,
 				(double) edges / edgeColourCount + 1, (double) edges / edgeColourCount + 1,
 				(double) edges / edgeColourCount + 1 };
-		for (double x : edgeColourValues)
-			System.out.println("edgevalue " + x);
 		ObjectDistribution<BitSet> edgeColourDistribution = new ObjectDistribution<>(edgeColours, edgeColourValues);
 		ColouredGraph cGraph = g.generateGraphColouredInDegree(expectedDistribution, edgeColourDistribution);
 		MultipleIntDistributionMetric<BitSet> metric = new ColouredInDegreeDistributionMetric();
@@ -75,8 +73,6 @@ public class ColouredIndegreeDistributionTest {
 		for (BitSet c : expectedDistribution.keySet()) {
 			Assert.assertTrue("There is no distribution for colour " + c.toString(), distributions.containsKey(c));
 			distribution = distributions.get(c);
-			System.out.println("expected: " + expectedDistribution.get(c));
-			System.out.println("achieved: " + distribution);
 			Assert.assertArrayEquals("Sampe space of colour " + c.toString() + " does not match.",
 					expectedDistribution.get(c).sampleSpace, distribution.sampleSpace);
 			expectedValues = expectedDistribution.get(c).values;

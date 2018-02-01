@@ -26,7 +26,7 @@ public class ColouredIndegreeDistributionNormalizedTest {
 
 	final int vertexColourCount = 10;
 	final int edgeColourCount = 5;
-	final int numberNodes = 500;
+	final int numberNodes = 10000;
 
 	@Test
 	public void test() {
@@ -43,8 +43,8 @@ public class ColouredIndegreeDistributionNormalizedTest {
 		Map<BitSet, IntDistribution> expectedDistribution = new HashMap<BitSet, IntDistribution>();
 		for (int i = 0; i < vertexColourCount; i++) {
 			int[] sampleSpace = { 1, 2, 3 };
-			double[] degreeValues = { 97. / (double) numberNodes, 224. / (double) numberNodes,
-					179. / (double) numberNodes };
+			double[] degreeValues = { 0.25, 0.40, 0.35 };
+
 			for (int j = 0; j < sampleSpace.length; j++) {
 				edges += sampleSpace[j] * degreeValues[j];
 			}
@@ -59,8 +59,11 @@ public class ColouredIndegreeDistributionNormalizedTest {
 		}
 		double[] edgeColourValues = { 0.25, 0.20, 0.10, 0.15, 0.30 };
 		ObjectDistribution<BitSet> edgeColourDistribution = new ObjectDistribution<>(edgeColours, edgeColourValues);
+		long startTime = System.nanoTime();
 		ColouredGraph cGraph = g.generateGraphColouredInDegreeNormalized(expectedDistribution, edgeColourDistribution,
 				numberNodes);
+		long elapsedTime = System.nanoTime() - startTime;
+		System.out.println("Time for creating a graph with " + numberNodes + " nodes in ms: " + elapsedTime/1000000);
 		MultipleIntDistributionMetric<BitSet> metric = new ColouredInDegreeDistributionMetric();
 		// for negative testing
 		// cGraph.setVertexColour(5, new BitSet(20));

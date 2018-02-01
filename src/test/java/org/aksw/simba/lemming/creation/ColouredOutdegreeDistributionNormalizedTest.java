@@ -26,7 +26,7 @@ public class ColouredOutdegreeDistributionNormalizedTest {
 
 	final int vertexColourCount = 10;
 	final int edgeColourCount = 5;
-	final int numberNodes = 500;
+	final int numberNodes = 200;
 
 	@Test
 	public void test() {
@@ -43,7 +43,7 @@ public class ColouredOutdegreeDistributionNormalizedTest {
 		Map<BitSet, IntDistribution> expectedDistribution = new HashMap<BitSet, IntDistribution>();
 		for (int i = 0; i < vertexColourCount; i++) {
 			int[] sampleSpace = { 1, 2, 3 };
-			double[] degreeValues = { 97./(double)numberNodes, 224./(double)numberNodes, 179./(double)numberNodes };
+			double[] degreeValues = { 0.25, 0.40, 0.35 };
 			for (int j = 0; j < sampleSpace.length; j++) {
 				edges += sampleSpace[j] * degreeValues[j];
 			}
