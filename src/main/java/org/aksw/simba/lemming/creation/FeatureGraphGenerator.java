@@ -23,8 +23,9 @@ import org.aksw.simba.lemming.metrics.dist.multi.ColouredInDegreeDistributionMet
 import org.aksw.simba.lemming.metrics.dist.multi.ColouredOutDegreeDistributionMetric;
 
 /**
- * !!! PROTOTYPICAL !!! This class implements algorithms for generating coloured
- * graphs according to a given set of features
+ * This class implements algorithms for generating coloured graphs according to
+ * a given set of features, namely coloured degree distributions and edge colour
+ * distributions
  * 
  * @author Jonas Hanselle (jmhansel@campus.uni-paderborn.de)
  *
@@ -36,8 +37,11 @@ public class FeatureGraphGenerator {
 	}
 
 	/**
+	 * Generates a coloured graph according to a coloured indegree distribution and
+	 * a edge colour distribution.
+	 * 
 	 * @param colouredInDegreeDistribution
-	 *            Indegree distribution for each colour
+	 *            Desired indegree distribution for each colour
 	 * @param edgeColourDistribution
 	 *            Desired colour distribution over edges
 	 * @return {@link ColouredGraph} object with the desired properties
@@ -115,8 +119,11 @@ public class FeatureGraphGenerator {
 	}
 
 	/**
-	 * @param colouredInDegreeDistribution
-	 *            Outdegree distribution for each colour
+	 * Generates a coloured graph according to a coloured outdegree distribution and
+	 * a edge colour distribution.
+	 * 
+	 * @param colouredOutDegreeDistribution
+	 *             Desired outdegree distribution for each colour
 	 * @param edgeColourDistribution
 	 *            Desired colour distribution over edges
 	 * @return {@link ColouredGraph} object with the desired properties
@@ -194,13 +201,17 @@ public class FeatureGraphGenerator {
 	}
 
 	/**
-	 * @param colouredInDegreeDistribution
-	 *            Outdegree distribution for each colour normalized
+	 * Generates a coloured graph according to a normalized coloured outdegree
+	 * distribution and a normalized edge colour distribution.
+	 * 
+	 * @param colouredOutDegreeDistribution
+	 *            Desired normalized outdegree distribution for each colour
 	 * @param edgeColourDistribution
-	 *            Desired colour distribution over edges normalized
+	 *            Desired normalized colour distribution over edges
 	 * @return {@link ColouredGraph} object with the desired properties
 	 */
-	public ColouredGraph generateGraphColouredOutDegreeNormalized(Map<BitSet, IntDistribution> colouredOutDegreeDistribution,
+	public ColouredGraph generateGraphColouredOutDegreeNormalized(
+			Map<BitSet, IntDistribution> colouredOutDegreeDistribution,
 			ObjectDistribution<BitSet> edgeColourDistribution, int numberNodes) {
 		Map<BitSet, IntDistribution> colouredOutDegreeDistributionDiscrete = new HashMap<BitSet, IntDistribution>();
 		ObjectDistribution<BitSet> edgeColourDistributionDiscrete;
@@ -218,21 +229,25 @@ public class FeatureGraphGenerator {
 			colouredOutDegreeDistributionDiscrete.put(col, discreteDist);
 		}
 		double[] edgeColourValues = new double[edgeColourDistribution.values.length];
-		for(int i = 0; i < edgeColourDistribution.values.length; i++) {
+		for (int i = 0; i < edgeColourDistribution.values.length; i++) {
 			edgeColourValues[i] = edges * edgeColourDistribution.values[i];
 		}
 		edgeColourDistributionDiscrete = new ObjectDistribution<>(edgeColourDistribution.sampleSpace, edgeColourValues);
 		return generateGraphColouredOutDegree(colouredOutDegreeDistributionDiscrete, edgeColourDistributionDiscrete);
 	}
-	
+
 	/**
+	 * Generates a coloured graph according to a normalized coloured indegree
+	 * distribution and a normalized edge colour distribution.
+	 * 
 	 * @param colouredInDegreeDistribution
-	 *            Outdegree distribution for each colour normalized
+	 *            Desired normalized indegree distribution for each colour
 	 * @param edgeColourDistribution
-	 *            Desired colour distribution over edges normalized
+	 *            Desired normalized colour distribution over edges
 	 * @return {@link ColouredGraph} object with the desired properties
 	 */
-	public ColouredGraph generateGraphColouredInDegreeNormalized(Map<BitSet, IntDistribution> colouredInDegreeDistribution,
+	public ColouredGraph generateGraphColouredInDegreeNormalized(
+			Map<BitSet, IntDistribution> colouredInDegreeDistribution,
 			ObjectDistribution<BitSet> edgeColourDistribution, int numberNodes) {
 		Map<BitSet, IntDistribution> colouredOutDegreeDistributionDiscrete = new HashMap<BitSet, IntDistribution>();
 		ObjectDistribution<BitSet> edgeColourDistributionDiscrete;
@@ -250,7 +265,7 @@ public class FeatureGraphGenerator {
 			colouredOutDegreeDistributionDiscrete.put(col, discreteDist);
 		}
 		double[] edgeColourValues = new double[edgeColourDistribution.values.length];
-		for(int i = 0; i < edgeColourDistribution.values.length; i++) {
+		for (int i = 0; i < edgeColourDistribution.values.length; i++) {
 			edgeColourValues[i] = edges * edgeColourDistribution.values[i];
 		}
 		edgeColourDistributionDiscrete = new ObjectDistribution<>(edgeColourDistribution.sampleSpace, edgeColourValues);
